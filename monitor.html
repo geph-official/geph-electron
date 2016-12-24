@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="custom.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <!-- top bar: logo, version, settings button -->
+            <div class="row" id="top-bar">
+                <div class="col-xs-2 text-xs-left">
+                    <img id="logo-icon" src="assets/logo-old.png">
+                </div>
+                <div class="col-xs-8 text-xs-center text-white">
+                    Version
+                    <span id="version-string">
+                        version-string
+                    </span>
+                </div>
+                <div class="col-xs-2 text-white text-xs-right">
+                    <a id="settings-btn" href="#">
+                        <img id="settings-icon" src="assets/settings.svg">
+                    </a>
+                </div>
+            </div>
+            <!-- first row: status icon -->
+            <div class="row">
+                <div class="col-xs-12 text-xs-center">
+                    <img id="status-icon" src="assets/loading.gif">
+                </div>
+            </div>
+            <!-- second row: status text -->
+            <div class="row">
+                <div class="col-xs-12 text-xs-center">
+                    <span id="status-text">status-text</span>
+                </div>
+            </div>
+            <!-- third row: tooltip -->
+            <div class="row">
+                <div class="col-xs-12 text-xs-center text-muted">
+                    <span id="tooltip-text">tooltip-text</span><br>
+                </div>
+            </div>
+            <!-- fourth row: buttons -->
+            <div class="row">
+                <div class="col-xs-12 text-xs-center">
+                    <hr>
+                    <button type="button" class="btn btn-primary"
+                        id="connect-btn">connect-btn</button>
+                    <button type="button" class="btn btn-warning"
+                        id="disconnect-btn">disconnect-btn</button>
+                </div>
+            </div>
+
+            <!-- modal for bad accounts -->
+            <div class="modal fade" id="error-modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="error-title">
+                                error-title
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="error-text">error-text</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="error-dismiss">
+                                error-dismiss
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- modal for settings -->
+            <div class="modal fade" id="settings-modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="settings-title">
+                                settings-title
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox"
+                                        id="chk-autoconfig-browser" value="">
+                                    <span id="lab-autoconfig-browser">lab-autoconfig-browser</span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox"
+                                        id="chk-avoid-china" value="">
+                                    <span id="lab-avoid-china">lab-avoid-china</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="settings-dismiss">
+                                settings-dismiss
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- bottom bar -->
+        <div id="bottom-bar">
+            <table>
+                <tr>
+                    <td><span id="balance-value">...</span>
+                        <span id="balance-label">balance-label</span></td>
+                    <td class="text-xs-right">
+                        <span id="speed-value">...</span>
+                        <img id="exit-flag" src="assets/flags/un.svg">
+                        <span id="exit-value">...</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <script>
+            window.$ = window.jQuery = require('./jquery.js')
+        </script>
+        <script src="bootstrap/js/bootstrap.js"></script>
+        <script src="l10n.js"></script>
+        <script src="daemon.js"></script>
+        <script>
+            // kill the daemon when we exit
+            window.onbeforeunload = function (e) {
+                console.log("Cleaning up...")
+                stopDaemon()
+            }
+            // state transitions
+            let state = ""
+            function setStatusConnecting() {
+                $("#status-text").html(l10n["statusConnecting"])
+                $("#tooltip-text").html("　")
+                // prevent the animation from resetting
+                if (state != "connecting") {
+                    $("#status-icon").attr("src", "assets/loading.gif")
+                }
+                $("#connect-btn").hide()
+                $("#disconnect-btn").show()
+                state = "connecting"
+            }
+            function setStatusConnected() {
+                $("#status-text").html(l10n["statusConnected"])
+                if (localStorage.getItem("gephpref.autoconfig-browser") == "true") {
+                    $("#tooltip-text").html(l10n["tooltipBrowser"])
+                } else {
+                    $("#tooltip-text").html(l10n["tooltipProxy"])
+                }
+                $("#status-icon").attr("src", "assets/connected.png")
+                state = "connected"
+            }
+            function setStatusDisconnected() {
+                $("#status-text").html(l10n["statusDisconnected"])
+                $("#tooltip-text").html("　")
+                $("#status-icon").attr("src", "assets/disconnected.png")
+                $("#disconnect-btn").hide()
+                $("#connect-btn").show()
+                state = "disconnected"
+            }
+            // initialize labels function
+            function initLabels() {
+                $("#version-string").text("DEV")
+                $("#balance-label").text(l10n["balanceLabel"])
+                $("#connect-btn").text(l10n["connectBtn"])
+                $("#disconnect-btn").text(l10n["disconnectBtn"])
+                setStatusConnecting()
+            }
+            // one iteration of the monitoring loop
+            let monCount = 0
+            let lastTrans = 0
+            function monitorOnce() {
+                $.getJSON("http://127.0.0.1:8790/summary", function(data) {
+                    if (data.Status == "connected") {
+                        setStatusConnected()
+                        let omc = monCount
+                        monCount++
+                        // update account info every 10 seconds
+                        if (omc % 10 == 0) {
+                            $.getJSON("http://127.0.0.1:8790/accinfo", function(data) {
+                                $("#balance-value").text((data.Balance/1000.0).toFixed(2) + " GB")
+                            })
+                        }
+                        // update net info
+                        $.getJSON("http://127.0.0.1:8790/netinfo", function(data) {
+                            $("#exit-value").text(data.Exit)
+                            $("#exit-flag").attr("src", "assets/flags/" +
+                                data.ExitCountry.toLowerCase() + ".svg")
+                        })
+                        // update the speed
+                        let newTrans = data.BytesTX + data.BytesRX
+                        if (lastTrans != 0) {
+                            $("#speed-value").text(((newTrans - lastTrans)/1000.0).toFixed(1) + " KB/s")
+                        }
+                        lastTrans = newTrans
+                    } else {
+                        setStatusConnecting()
+                    }
+                })
+            }
+            // start monitoring
+            function startMonitor() {
+                setInterval(monitorOnce, 1000)
+            }
+
+            // account problems
+            function dieCannotLogin() {
+                $("#error-title").text(l10n["errTitle"])
+                $("#error-text").text(l10n["errCannotLogin"])
+                $("#error-dismiss").text(l10n["errLogOut"])
+                $("#error-dismiss").off().click(() => location.replace("login.html"))
+                $("#error-modal").modal({show: true, backdrop: "static", keyboard: false})
+                localStorage.removeItem("gephpref.uname")
+                localStorage.removeItem("gephpref.pword")
+            }
+
+            // entry point
+            $(document).ready(function(){
+                // settings button
+                $("#settings-btn").on('click', function() {
+                    // set labels
+                    $("#settings-title").text(l10n["settingsTitle"])
+                    $("#lab-autoconfig-browser").text(l10n["autoconfigBrowser"])
+                    $("#lab-avoid-china").text(l10n["avoidChina"])
+                    $("#settings-dismiss").text(l10n["settingsDismiss"])
+                    $("#settings-modal").modal({backdrop:"static", keyboard:false})
+                    // fill in the checkboxes
+                    $("#chk-autoconfig-browser").prop("checked",
+                        localStorage.getItem("gephpref.autoconfig-browser") == "true")
+                    $("#chk-avoid-china").prop("checked",
+                        localStorage.getItem("gephpref.avoid-china") == "true")
+                })
+
+                // save settings
+                $("#settings-dismiss").on('click', function() {
+                    localStorage.setItem("gephpref.autoconfig-browser",
+                        $("#chk-autoconfig-browser").prop("checked"))
+                    localStorage.setItem("gephpref.avoid-china",
+                        $("#chk-avoid-china").prop("checked"))
+                    // restart the daemon by clicking on the buttons
+                    $("#disconnect-btn").click()
+                    $("#connect-btn").click()
+                    // hide the modal
+                    $("#settings-modal").modal("hide")
+                })
+
+                // disconnect button
+                $("#disconnect-btn").click(function() {
+                    stopDaemon()
+                    setStatusDisconnected()
+                })
+
+                // connect button
+                $("#connect-btn").click(function() {
+                    startDaemon()
+                    setStatusConnecting()
+                })
+
+                initLabels()
+                startMonitor()
+                startDaemon()
+                gephDaemon.on('close', function(code) {
+                    if (code == 43) {
+                        stopDaemon()
+                        setStatusDisconnected()
+                        dieCannotLogin()
+                    }
+                })
+            })
+        </script>
+    </body>
+</html>

@@ -1,0 +1,53 @@
+body {
+    background-color: #FFFFFF;
+    /*font-family: Arial, Helvetica, "Liberation Sans", sans-serif;*/
+}
+
+#top-bar {
+    height: 48px;
+    background-color: #0d0015;
+    line-height: 48px;
+}
+
+#bottom-bar {
+    height: 26px;
+    background-color: #eeeeee;
+    border-color: #aaaaaa;
+    border-width: 1px;
+    border-style: solid;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+#bottom-bar > table {
+    width: 100%;
+    font-size: 80%;
+}
+
+#exit-flag {
+    height: 20px;
+    margin: 0px;
+    vertical-align: middle;
+}
+
+#exit-value {
+    font-family: monospace;
+}
+
+#logo-icon {
+    height: 42px;
+}
+
+#settings-icon {
+    height: 22px;
+}
+
+#status-icon {
+    height: 72px;
+    margin: 20px;
+}
+
+#status-text {
+    font-size: 14pt;
+}
