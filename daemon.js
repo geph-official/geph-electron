@@ -10,6 +10,8 @@ function getBinaryPath() {
         }
     } else if (os.platform() == 'win32') {
         return __dirname +  '/assets/binaries/windows-i386/'
+    } else if (os.platform() == 'darwin') {
+        return __dirname +  '/assets/binaries/darwin-amd64/'
     }
     throw 'UNKNOWN OS'
 }
