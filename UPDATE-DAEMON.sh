@@ -1,5 +1,8 @@
 #!/bin/sh
 
 echo "Updating Windows binary..."
-curl https://dl.geph.io/XGO_BUILD/geph-latest-windows-4.0-386.exe > ./assets/binaries/windows-i386/geph.exe
+curl https://dl.geph.io/XGO_BUILD/geph-v0.1.0-windows-4.0-386.exe > ./assets/binaries/windows-i386/geph.exe
 
+echo "Updating Linux 64-bit binary..."
+curl https://dl.geph.io/XGO_BUILD/geph-v0.1.0-linux-amd64 > ./assets/binaries/linux-amd64/geph
+chmod +x ./assets/binaries/linux-amd64/geph

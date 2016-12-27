@@ -1,4 +1,4 @@
-var l10nEn = {
+let l10nEn = {
     "cancel": "Cancel",
 
     "errTitle": "Error",
@@ -36,7 +36,7 @@ var l10nEn = {
     "settingsDismiss": "Save settings"
 }
 
-var l10nZht = {
+let l10nZht = {
     "cancel": "取消",
 
     "errTitle": "錯誤",
@@ -57,7 +57,7 @@ var l10nZht = {
     "errCaptchaIncorrect": "驗證碼錯誤。請重新輸入。",
 
     "statusConnecting" : "正在連接...",
-    "statusConnected" : "<b class='text-success'>成功連接</b>至暗渠系統",
+    "statusConnected" : "<b class='text-success'>成功連接</b>至伺服器",
     "statusDisconnected": "已斷開連接",
 
     "tooltipBrowser" : "打開瀏覽器便可自由上網",
@@ -74,5 +74,65 @@ var l10nZht = {
     "settingsDismiss": "保存設定"
 }
 
-var l10n = l10nEn
-$("html").attr("lang", "en")
+let l10nZhs = {
+    "cancel": "取消",
+
+    "errTitle": "错误",
+    "errUnexpected": "异常错误",
+    "errCannotLogin": "用户名或密码不正确！",
+    "errLogOut": "登出",
+
+    "unameBox": "用户名",
+    "pwordBox": "密码",
+    "loginBtn": "登入",
+    "registerBtn": "建立帐户",
+    "captchaBox": "验证码",
+    "registerSubmit": "确认",
+
+    "registerTitle": "建立新的帐户",
+    "registerSuccess": "您的帐户已成功建立！\n现在便可使用您的帐户登入。",
+    "errUserExists": "该用户名已有用户使用。请输入其他的用户名。",
+    "errCaptchaIncorrect": "验证码错误。请重新输入。",
+
+    "statusConnecting" : "正在连接...",
+    "statusConnected" : "<b class='text-success'>成功连接</b>至服务器",
+    "statusDisconnected": "已断开连接",
+
+    "tooltipBrowser" : "打开浏览器便可自由上网",
+    "tooltipProxy": "请用HTTP代理localhost:8780上网",
+
+    "balanceLabel": "剩余流量",
+
+    "connectBtn": "连接",
+    "disconnectBtn": "断开",
+
+    "settingsTitle": "设定",
+    "autoconfigBrowser": "自动设定浏览器代理",
+    "avoidChina": "不代理中国大陆网站",
+    "settingsDismiss": "保存设定"
+}
+
+let l10n = l10nEn
+
+// TODO make this configurable rather than resetting on start
+if (!localStorage.getItem("gephpref.lang") || true) {
+    let sysLang = require("electron").remote.app.getLocale()
+    if (sysLang == "zh-TW" || sysLang == "zh-HK") {
+        localStorage.setItem("gephpref.lang", "zht")
+    } else if (sysLang == "zh-CN" || sysLang == "zh-SG "){
+        localStorage.setItem("gephpref.lang", "zhs")
+    } else {
+        localStorage.setItem("gephpref.lang", "en")
+    }
+}
+
+if (localStorage.getItem("gephpref.lang") == "zht") {
+    l10n = l10nZht
+    $("html").attr("lang", "zh-TW")
+} else if (localStorage.getItem("gephpref.lang") == "zhs") {
+    l10n = l10nZhs
+    $("html").attr("lang", "zh-CN")
+} else {
+    l10n = l10nEn
+    $("html").attr("lang", "en")
+}
