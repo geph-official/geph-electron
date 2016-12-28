@@ -102,3 +102,15 @@ if (!localStorage.getItem("gephpref.autoconfig-browser")) {
 if (!localStorage.getItem("gephpref.avoid-china")) {
     localStorage.setItem("gephpref.avoid-china", "true")
 }
+
+// on macOS, elevate pac permissions
+const os = require('os')
+if (os.platform() == 'darwin') {
+    if (!localStorage.getItem("gephpref.notfirst")) {
+        require('child_process').spawn(
+            getBinaryPath() + "cocoasudo",
+            ["--prompt", l10n["macPacMsg"], getBinaryPath() + "pac", "setuid"]
+        )
+        localStorage.setItem("gephpref.notfirst", "true")
+    }
+}

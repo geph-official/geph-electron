@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppVersion "DEV"
-#define MyAppPublisher "Anesidora Technologies"
+#define MyAppPublisher "Geph team"
 #define MyAppURL "https://geph.io/"
 #define MyAppExeName "geph-electron.exe"
 

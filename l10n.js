@@ -33,7 +33,9 @@ let l10nEn = {
     "settingsTitle": "Settings",
     "autoconfigBrowser": "Automatically configure browsers",
     "avoidChina": "Avoid proxying P.R. Chinese websites",
-    "settingsDismiss": "Save settings"
+    "settingsDismiss": "Save settings",
+
+    "macPacMsg": "Geph requires your password the first time it is started in order to configure your network."
 }
 
 let l10nZht = {
@@ -71,7 +73,9 @@ let l10nZht = {
     "settingsTitle": "設定",
     "autoconfigBrowser": "自動設定瀏覽器代理",
     "avoidChina": "不代理中國大陸網站",
-    "settingsDismiss": "保存設定"
+    "settingsDismiss": "保存設定",
+
+    "macPacMsg": "在第一次使用時，迷霧通需要您的密碼來更改您的網路設定。"
 }
 
 let l10nZhs = {
@@ -109,7 +113,9 @@ let l10nZhs = {
     "settingsTitle": "设定",
     "autoconfigBrowser": "自动设定浏览器代理",
     "avoidChina": "不代理中国大陆网站",
-    "settingsDismiss": "保存设定"
+    "settingsDismiss": "保存设定",
+
+    "macPacMsg": "在第一次使用时，迷雾通需要您的密码来更改您的网络设定。"
 }
 
 let l10n = l10nEn
