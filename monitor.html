@@ -246,8 +246,10 @@
                     localStorage.setItem("gephpref.avoid-china",
                         $("#chk-avoid-china").prop("checked"))
                     // restart the daemon by clicking on the buttons
-                    $("#disconnect-btn").click()
-                    $("#connect-btn").click()
+                    if (gephDaemon != null) {
+                        $("#disconnect-btn").click()
+                        $("#connect-btn").click()
+                    }
                     // hide the modal
                     $("#settings-modal").modal("hide")
                 })
