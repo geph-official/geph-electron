@@ -45,10 +45,12 @@ function startDaemon() {
 }
 
 function stopDaemon() {
-    const spawn = require('child_process').spawn
-    gephDaemon.kill()
-    spawn(getBinaryPath() + 'pac' + binExt(), ["off"])
-    gephDaemon = null
+    if (gephDaemon != null) {
+        const spawn = require('child_process').spawn
+        gephDaemon.kill()
+        spawn(getBinaryPath() + 'pac' + binExt(), ["off"])
+        gephDaemon = null
+    }
 }
 
 // getCaptcha starts a proxbinder, gets a captcha, and calls cback with the result
