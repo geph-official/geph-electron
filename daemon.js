@@ -103,13 +103,23 @@ if (!localStorage.getItem("gephpref.avoid-china")) {
     localStorage.setItem("gephpref.avoid-china", "true")
 }
 
+function arePermsCorrect() {
+    let stats = fs.statSync(getBinaryPath() + "pac")
+    console.log("UID of pac is", stats.uid, ", root is zero")
+    return (stats.uid == 0)
+}
+
+function forceElevatePerms() {
+    const spawn = require('child_process').spawn
+    spawn(getBinaryPath() + "cocoasudo",
+        ["prompt=" + l10n["macPacMsg"], getBinaryPath() + "pac", "setuid"])
+}
+
 function elevatePerms() {
     const fs = require("fs")
     let stats = fs.statSync(getBinaryPath() + "pac")
-    if (stats.uid != 0) {
-        const spawn = require('child_process').spawn
-        spawn(getBinaryPath() + "cocoasudo",
-            ["prompt=" + l10n["macPacMsg"], getBinaryPath() + "pac", "setuid"])
+    if (!arePermsCorrect()) {
+        forceElevatePerms
     }
 }
 
