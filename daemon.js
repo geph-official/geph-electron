@@ -112,15 +112,16 @@ function arePermsCorrect() {
 
 function forceElevatePerms() {
     const spawn = require('child_process').spawn
-    spawn(getBinaryPath() + "cocoasudo",
+    let lol = spawn(getBinaryPath() + "cocoasudo",
         ["prompt=" + l10n["macPacMsg"], getBinaryPath() + "pac", "setuid"])
+    lol.stderr.on('data', console.log)
 }
 
 function elevatePerms() {
     const fs = require("fs")
     let stats = fs.statSync(getBinaryPath() + "pac")
     if (!arePermsCorrect()) {
-        forceElevatePerms
+        forceElevatePerms()
     }
 }
 
