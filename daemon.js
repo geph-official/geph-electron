@@ -109,7 +109,7 @@ function elevatePerms() {
     if (stats.uid != 0) {
         const spawn = require('child_process').spawn
         spawn(getBinaryPath() + "cocoasudo",
-            ["prompt=" + l10n["macPacMsg"]], getBinaryPath() + "pac", "setuid"])
+            ["prompt=" + l10n["macPacMsg"], getBinaryPath() + "pac", "setuid"])
     }
 }
 
