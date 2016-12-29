@@ -104,6 +104,7 @@ if (!localStorage.getItem("gephpref.avoid-china")) {
 }
 
 function arePermsCorrect() {
+    const fs = require('fs')
     let stats = fs.statSync(getBinaryPath() + "pac")
     console.log("UID of pac is", stats.uid, ", root is zero")
     return (stats.uid == 0)
