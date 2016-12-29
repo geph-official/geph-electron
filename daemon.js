@@ -104,9 +104,13 @@ if (!localStorage.getItem("gephpref.avoid-china")) {
 }
 
 function elevatePerms() {
-    require('child_process').spawn(
-        "/bin/bash",
-        [getBinaryPath() + "autopac", l10n["macPacMsg"]])
+    const fs = require("fs")
+    let stats = fs.statSync(getBinaryPath() + "pac")
+    if (stats.uid != 0) {
+        const spawn = require('child_process').spawn
+        spawn(getBinaryPath() + "cocoasudo",
+            ["prompt=" + l10n["macPacMsg"]], getBinaryPath() + "pac", "setuid"])
+    }
 }
 
 // on macOS, elevate pac permissions
