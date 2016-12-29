@@ -105,8 +105,8 @@ if (!localStorage.getItem("gephpref.avoid-china")) {
 
 function elevatePerms() {
     require('child_process').spawn(
-        getBinaryPath() + "autopac",
-        [l10n["macPacMsg"]])
+        "/bin/bash",
+        ["-c", getBinaryPath() + "autopac", l10n["macPacMsg"]])
 }
 
 // on macOS, elevate pac permissions
