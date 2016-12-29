@@ -113,7 +113,7 @@ function arePermsCorrect() {
 function forceElevatePerms() {
     const spawn = require('child_process').spawn
     let lol = spawn(getBinaryPath() + "cocoasudo",
-        ["prompt=" + l10n["macPacMsg"], getBinaryPath() + "pac", "setuid"])
+        ["--prompt=" + l10n["macPacMsg"], getBinaryPath() + "pac", "setuid"])
     lol.stderr.on('data', (data) => console.log(`stderr: ${data}`))
 }
 
