@@ -106,7 +106,7 @@ if (!localStorage.getItem("gephpref.avoid-china")) {
 function elevatePerms() {
     require('child_process').spawn(
         getBinaryPath() + "cocoasudo",
-        ["--prompt", l10n["macPacMsg"], getBinaryPath() + "pac", "setuid"])
+        ["--prompt=" + l10n["macPacMsg"], getBinaryPath() + "pac", "setuid"])
     localStorage.setItem("gephpref.notfirst", "true")
 }
 
