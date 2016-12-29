@@ -37,8 +37,8 @@ function createWindow() {
 	}))
 
 	// Open the DevTools.
-	//win.webContents.openDevTools()
-	win.setResizable(false);
+	win.webContents.openDevTools()
+	//win.setResizable(false);
 
 	// Emitted when the window is closed.
 	win.on('closed', () => {
