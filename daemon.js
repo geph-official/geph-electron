@@ -40,6 +40,7 @@ function startDaemon() {
     if (localStorage.getItem("gephpref.autoconfig-browser") == "true") {
         spawn(getBinaryPath() + 'pac' + binExt(),
             ["on", "http://127.0.0.1:8790/proxy.pac"])
+        console.log("** PAC path is " +  getBinaryPath() + "pac" + binExt(), ", trying to run **")
     }
     gephDaemon.stderr.on('data', (data) => console.log(`stderr: ${data}`))
 }
@@ -114,6 +115,7 @@ function forceElevatePerms() {
     const spawn = require('child_process').spawn
     let lol = spawn(getBinaryPath() + "cocoasudo",
         ["--prompt=" + l10n["macPacMsg"], getBinaryPath() + "pac", "setuid"])
+    console.log("** PAC path is " +  getBinaryPath() + "pac" + ", trying to elevate **")
     lol.stderr.on('data', (data) => console.log(`stderr: ${data}`))
 }
 
@@ -121,6 +123,10 @@ function elevatePerms() {
     const fs = require("fs")
     let stats = fs.statSync(getBinaryPath() + "pac")
     if (!arePermsCorrect()) {
+        console.log("We have to elevate perms for pac. But to prevent running into that infamous problem, we clear setuid bits first")
+        const spawnSync = require('child_process').spawnSync
+        spawnSync("/bin/chmod", ["ug-s", getBinaryPath() + "pac"])
+        console.log("Setuid cleared on pac, now we run cocoasudo!")
         forceElevatePerms()
     }
 }
