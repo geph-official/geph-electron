@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
         <link rel="stylesheet" href="custom.css">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title></title>
     </head>
     <body>
         <div class="container-fluid">
@@ -168,10 +169,11 @@
             }
             // initialize labels function
             function initLabels() {
-                $("#version-string").text("DEV")
+                $("#version-string").text("D001")
                 $("#balance-label").text(l10n["balanceLabel"])
                 $("#connect-btn").text(l10n["connectBtn"])
                 $("#disconnect-btn").text(l10n["disconnectBtn"])
+                $("title").text(l10n["geph"])
                 setStatusConnecting()
             }
             // one iteration of the monitoring loop

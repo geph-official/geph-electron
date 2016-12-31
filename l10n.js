@@ -1,4 +1,6 @@
 let l10nEn = {
+    "geph": "Geph",
+
     "cancel": "Cancel",
 
     "errTitle": "Error",
@@ -39,6 +41,8 @@ let l10nEn = {
 }
 
 let l10nZht = {
+    "geph": "迷霧通",
+
     "cancel": "取消",
 
     "errTitle": "錯誤",
@@ -79,6 +83,8 @@ let l10nZht = {
 }
 
 let l10nZhs = {
+    "geph": "迷雾通",
+
     "cancel": "取消",
 
     "errTitle": "错误",
