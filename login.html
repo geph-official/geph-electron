@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="custom.css">
+        <title></title>
+        <style>
+            body {
+                background-color: #0d0015;
+            }
+            #logo-big {
+                width: 128px;
+                margin: 12px;
+            }
+            .input-inverted {
+                background-color: #444444 !important;
+                color: white !important;
+            }
+            #captcha-img {
+                height: 40px;
+            }
+            #pword-display {
+                display: block;
+                height: 4px;
+                margin-top: -2px;
+                margin-left: 12px;
+            }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <!-- first row: just the logo -->
+            <div class="row">
+                <div class="col-xs-12 text-xs-center">
+                    <img id="logo-big" src="assets/logo-old.png">
+                </div>
+            </div>
+            <!-- second row: the form -->
+            <div class="row">
+                <div class="col-xs-1"></div>
+                <div class="col-xs-10 text-xs-center">
+                    <form class="text-small">
+                        <div class="form-group">
+                            <input type="username" class="form-control input-inverted"
+                                placeholder="uname-box" id="uname-box">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control input-inverted"
+                                placeholder="pword-box" id="pword-box">
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary"
+                                id="login-btn">login-btn</button>
+                            <button type="button" class="btn btn-secondary"
+                                id="register-btn">register-btn</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-xs-1"></div>
+            </div>
+            <!-- modal for register -->
+            <div class="modal fade" id="captcha-modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="register-title">register-title</h5>
+                        </div>
+                        <div class="modal-body">
+                            <form class="container-fluid">
+                                <div class="form-group row">
+                                    <label for="reg-pword-box" id="reg-uname-lab"
+                                    class="col-xs-4 col-form-label">
+                                        reg-uname-lab
+                                    </label>
+                                    <div class="col-xs-8">
+                                        <input type="username" class="form-control" id="reg-uname-box">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="reg-pword-box" id="reg-pword-lab"
+                                    class="col-xs-4 col-form-label">
+                                        reg-pword-lab
+                                    </label>
+                                    <div class="col-xs-8">
+                                        <input type="password" class="form-control" id="reg-pword-box">
+                                        <small id="pword-display" class="text-muted">
+                                            password-display
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="captcha-img" id="captcha-lab"
+                                    class="col-xs-4 col-form-label">captcha-lab</label>
+                                    <div class="col-xs-3">
+                                        <img id="captcha-img">
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <input type="text" maxlength="6"
+                                            class="form-control" id="captcha-box">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="register-cancel">
+                                register-cancel
+                            </button>
+                            <button type="button" class="btn btn-primary" id="register-submit">
+                                register-submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            window.$ = window.jQuery = require('./jquery.js')
+        </script>
+        <script src="bootstrap/js/bootstrap.js"></script>
+        <script src="l10n.js"></script>
+        <script src="daemon.js"></script>
+        <script>
+            function disableButtons() {
+                $("button").attr("disabled", true)
+            }
+            function enableButtons() {
+                $("button").attr("disabled", false)
+            }
+            $(document).ready(function(){
+                // initialize the labels
+                $("title").text(l10n["geph"])
+                $("#uname-box").attr("placeholder", l10n["unameBox"])
+                $("#pword-box").attr("placeholder", l10n["pwordBox"])
+                $("#login-btn").text(l10n["loginBtn"])
+                $("#register-btn").text(l10n["registerBtn"])
+
+                // login action
+                $("#login-btn").click(function() {
+                    disableButtons()
+                    let uname = $("#uname-box").val()
+                    let pwd = $("#pword-box").val()
+                    // store the uname and pwd in localStorage
+                    localStorage.setItem("gephpref.uname", uname)
+                    localStorage.setItem("gephpref.pword", pwd)
+                    // jump directly to monitor
+                    // TODO basic sanity checking
+                    location.replace("monitor.html")
+                })
+
+                // register action
+                $("#register-btn").click(function() {
+                    getCaptcha(function(thing) {
+                        // set text
+                        $("#captcha-modal").modal({backdrop:"static", keyboard:false})
+                        $("#captcha-img").attr("src", "data:image/png;base64," + thing.CaptchaImg)
+                        $("#register-title").text(l10n["registerTitle"])
+                        $("#reg-pword-lab").text(l10n["pwordBox"])
+                        $("#reg-uname-lab").text(l10n["unameBox"])
+                        $("#reg-uname-box").val($("#uname-box").val())
+                        $("#reg-pword-box").val($("#pword-box").val())
+                        $("#captcha-lab").text(l10n["captchaBox"])
+                        $("#captcha-box").val("")
+                        $("#register-submit").text(l10n["registerSubmit"])
+                        $("#register-cancel").text(l10n["cancel"])
+
+                        // what do do when cancel
+                        $("#register-cancel").off().click(function() {
+                            $("#captcha-modal").modal("hide")
+                        })
+
+                        // update the pword box in lockstep
+                        $("#pword-display").text($("#reg-pword-box").val())
+                        $("#reg-pword-box").off().on("input", function() {
+                            $("#pword-display").text($("#reg-pword-box").val())
+                        })
+
+                        // to submit, we first derive keys, then call register-account
+                        $("#register-submit").off().click(function() {
+                            deriveKeys($("#reg-uname-box").val(),
+                            $("#reg-pword-box").val(), function(res) {
+                                // now we call register-account
+                                let uname = $("#reg-uname-box").val()
+                                let pubkey = res.PubKey
+                                let soln = $("#captcha-box").val()
+                                registerAccount(uname, pubkey, thing.CaptchaID, soln,
+                                function (final) {
+                                    // display a message saying registration is successful
+                                    alert(l10n["registerSuccess"])
+                                    // update the login screen
+                                    $("#uname-box").val(uname)
+                                    $("#pword-box").val("")
+                                    // turn off the modal
+                                    $("#captcha-modal").modal("hide")
+                                }, function(ecode) {
+                                    // update the captcha
+                                    getCaptcha((noothing) => {
+                                        thing = noothing
+                                        $("#captcha-img").attr("src",
+                                            "data:image/png;base64," + thing.CaptchaImg)
+                                    })
+                                    // this handles errors
+                                    if (ecode.status == 403) {
+                                        alert(l10n["errCaptchaIncorrect"])
+                                    } else if (ecode.status == 409) {
+                                        alert(l10n["errUserExists"])
+                                    } else {
+                                        alert(JSON.stringify(ecode))
+                                    }
+                                })
+                            })
+                        })
+                    })
+                })
+
+                // load from localStorage if available
+                let uname = localStorage.getItem("gephpref.uname")
+                let pword = localStorage.getItem("gephpref.pword")
+                if (uname != null && pword != null) {
+                    $("#uname-box").val(uname)
+                    $("#pword-box").val(pword)
+                    // log in right away
+                    //$("#login-btn").click()
+                }
+            })
+        </script>
+    </body>
+</html>
