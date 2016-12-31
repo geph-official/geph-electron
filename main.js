@@ -18,12 +18,16 @@ function createWindow() {
 	if (os.platform() == "win32") {
 		win = new BrowserWindow({
 			width: 400,
-			height: 400
+			height: 400,
+			resizable: false,
+			maximizable: false
 		})
 	} else {
 		win = new BrowserWindow({
 			width: 400,
-			height: 350
+			height: 350,
+			resizable: false,
+			maximizable: false
 		})
 	}
 
@@ -37,7 +41,7 @@ function createWindow() {
 	}))
 
 	// Open the DevTools.
-	win.webContents.openDevTools()
+	//win.webContents.openDevTools()
 	//win.setResizable(false);
 
 	// Emitted when the window is closed.
