@@ -123,6 +123,10 @@ function elevatePerms() {
     const fs = require("fs")
     let stats = fs.statSync(getBinaryPath() + "pac")
     if (!arePermsCorrect()) {
+        console.log("We have to elevate perms for pac. But to prevent running into that infamous problem, we clear setuid bits first")
+        const spawnSync = require('child_process').spawnSync
+        spawnSync("/bin/chmod", ["ug-s", getBinaryPath() + "pac"])
+        console.log("Setuid cleared on pac, now we run cocoasudo!")
         forceElevatePerms()
     }
 }
