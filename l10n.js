@@ -27,7 +27,12 @@ let l10nEn = {
     "tooltipBrowser" : "Access blocked sites using your browser.",
     "tooltipProxy": "Use the HTTP proxy localhost:8780.",
 
-    "balanceLabel": "left",
+    "ipLabel": "Public IP",
+    "connModeLabel": "Connection",
+    "connModeDirect": "Direct",
+    "connModeBackup": "Backup",
+    "balanceLabel": "Balance",
+    "speedLabel": "Transfer",
 
     "connectBtn": "Connect",
     "disconnectBtn": "Disconnect",
@@ -35,6 +40,7 @@ let l10nEn = {
     "settingsTitle": "Settings",
     "autoconfigBrowser": "Automatically configure browsers",
     "avoidChina": "Avoid proxying P.R. Chinese websites",
+    "langSelect": "Language",
     "settingsDismiss": "Save settings",
 
     "macPacMsg": "Geph requires your password the first time it is started in order to configure your network."
@@ -69,7 +75,12 @@ let l10nZht = {
     "tooltipBrowser" : "打開瀏覽器便可自由上網",
     "tooltipProxy": "請用HTTP代理localhost:8780上網",
 
+    "ipLabel": "公網IP",
+    "connModeLabel": "連接模式",
+    "connModeDirect": "快速",
+    "connModeBackup": "緊急",
     "balanceLabel": "剩餘流量",
+    "speedLabel": "當前速率",
 
     "connectBtn": "連接",
     "disconnectBtn": "斷開",
@@ -77,6 +88,7 @@ let l10nZht = {
     "settingsTitle": "設定",
     "autoconfigBrowser": "自動設定瀏覽器代理",
     "avoidChina": "不代理中國大陸網站",
+    "langSelect": "選擇語言",
     "settingsDismiss": "保存設定",
 
     "macPacMsg": "在第一次使用時，迷霧通需要您的密碼來更改您的網路設定。"
@@ -111,7 +123,12 @@ let l10nZhs = {
     "tooltipBrowser" : "打开浏览器便可自由上网",
     "tooltipProxy": "请用HTTP代理localhost:8780上网",
 
+    "ipLabel": "公网IP",
+    "connModeLabel": "连接模式",
+    "connModeDirect": "快速",
+    "connModeBackup": "紧急",
     "balanceLabel": "剩余流量",
+    "speedLabel": "当前速率",
 
     "connectBtn": "连接",
     "disconnectBtn": "断开",
@@ -119,6 +136,7 @@ let l10nZhs = {
     "settingsTitle": "设定",
     "autoconfigBrowser": "自动设定浏览器代理",
     "avoidChina": "不代理中国大陆网站",
+    "langSelect": "选择语言",
     "settingsDismiss": "保存设定",
 
     "macPacMsg": "在第一次使用时，迷雾通需要您的密码来更改您的网络设定。"
@@ -126,25 +144,33 @@ let l10nZhs = {
 
 let l10n = l10nEn
 
-// TODO make this configurable rather than resetting on start
-if (!localStorage.getItem("gephpref.lang") || true) {
-    let sysLang = require("electron").remote.app.getLocale()
-    if (sysLang == "zh-TW" || sysLang == "zh-HK") {
-        localStorage.setItem("gephpref.lang", "zht")
-    } else if (sysLang == "zh-CN" || sysLang == "zh-SG "){
-        localStorage.setItem("gephpref.lang", "zhs")
-    } else {
-        localStorage.setItem("gephpref.lang", "en")
+function loadLang() {
+    // TODO make this configurable rather than resetting on start
+    if (!localStorage.getItem("gephpref.lang")) {
+        let sysLang = require("electron").remote.app.getLocale()
+        if (sysLang == "zh-TW" || sysLang == "zh-HK") {
+            localStorage.setItem("gephpref.lang", "zht")
+        } else if (sysLang == "zh-CN" || sysLang == "zh-SG "){
+            localStorage.setItem("gephpref.lang", "zhs")
+        } else {
+            localStorage.setItem("gephpref.lang", "en")
+        }
     }
+
+    if (localStorage.getItem("gephpref.lang") == "zht") {
+        l10n = l10nZht
+        $("html").attr("lang", "zh-TW")
+    } else if (localStorage.getItem("gephpref.lang") == "zhs") {
+        l10n = l10nZhs
+        $("html").attr("lang", "zh-CN")
+    } else {
+        l10n = l10nEn
+        $("html").attr("lang", "en")
+    }
+
+    $("[data-l10n]").each(function(lol) {
+        $(this).html(l10n[$(this).data("l10n")])
+    })
 }
 
-if (localStorage.getItem("gephpref.lang") == "zht") {
-    l10n = l10nZht
-    $("html").attr("lang", "zh-TW")
-} else if (localStorage.getItem("gephpref.lang") == "zhs") {
-    l10n = l10nZhs
-    $("html").attr("lang", "zh-CN")
-} else {
-    l10n = l10nEn
-    $("html").attr("lang", "en")
-}
+$(document).ready(loadLang)

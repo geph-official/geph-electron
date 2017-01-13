@@ -18,20 +18,22 @@ function createWindow() {
 	if (os.platform() == "win32") {
 		win = new BrowserWindow({
 			width: 400,
-			height: 400,
+			height: 420,
 			resizable: false,
 			maximizable: false
 		})
 	} else {
 		win = new BrowserWindow({
 			width: 400,
-			height: 350,
+			height: 380,
 			resizable: false,
 			maximizable: false
 		})
 	}
 
 	win.setMenu(null);
+	// Prevent the UI itself from being routed through Geph
+	win.webContents.session.setProxy({proxyRules:"direct://"}, () => console.log("prox set"))
 
 	// and load the index.html of the app.
 	win.loadURL(url.format({

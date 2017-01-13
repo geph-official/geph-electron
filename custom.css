@@ -1,5 +1,18 @@
 body {
-    background-color: #FFFFFF;
+    background-color: #EEEEEE;
+}
+
+/* Prevent using SimSun */
+:lang(zh-CN) {
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+}
+
+.text-success {
+    color: #007b43 !important;
+}
+
+.faded {
+    opacity: 0.5 !important;
 }
 
 #top-bar {
@@ -24,6 +37,10 @@ body {
     font-size: 80%;
 }
 
+#infotab {
+    line-height: 32px;
+}
+
 #exit-flag {
     height: 20px;
     margin: 0px;
@@ -31,7 +48,7 @@ body {
 }
 
 #exit-value {
-    font-family: monospace;
+
 }
 
 #logo-icon {
@@ -43,10 +60,21 @@ body {
 }
 
 #status-icon {
-    height: 72px;
-    margin: 20px;
+    height: 50px;
+    margin-right: 16px;
+}
+
+#status-table {
+    display: inline-table;
+    width: auto;
+    text-align: left;
+    margin-top: 16px;
 }
 
 #status-text {
-    font-size: 14pt;
+    font-size: 13pt;
+}
+
+#tooltip-text {
+    font-size: 90%;
 }
