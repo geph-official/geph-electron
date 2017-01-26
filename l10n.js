@@ -29,7 +29,7 @@ let l10nEn = {
 
     "ipLabel": "Public IP",
     "connModeLabel": "Connection",
-    "connModeDirect": "Direct",
+    "connModeDirect": "Normal",
     "connModeBackup": "Backup",
     "balanceLabel": "Balance",
     "speedLabel": "Transfer",

@@ -1,7 +1,10 @@
 geph-*
-assets/binaries/darwin-amd64/geph
-assets/binaries/linux-amd64/geph
-assets/binaries/linux-i386/geph
-assets/binaries/windows-i386/geph.exe
+build/
+assets/binaries/*/geph
+assets/binaries/*/geph
+assets/binaries/*/geph
+assets/binaries/*/geph.exe
 node_modules
-BUILD/Output
+RELEASE/Output
+RELEASE/PreOutput
+*.log

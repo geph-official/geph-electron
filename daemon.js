@@ -4,14 +4,14 @@ function getBinaryPath() {
     const os = require('os')
     if (os.platform() == 'linux') {
         if (os.arch() == 'x64') {
-            return __dirname + '/assets/binaries/linux-amd64/'
+            return __dirname + '/assets/binaries/linux-x64/'
         } else {
-            return __dirname +  '/assets/binaries/linux-i386/'
+            return __dirname +  '/assets/binaries/linux-ia32/'
         }
     } else if (os.platform() == 'win32') {
-        return __dirname +  '/assets/binaries/windows-i386/'
+        return __dirname +  '/assets/binaries/win-ia32/'
     } else if (os.platform() == 'darwin') {
-        return __dirname +  '/assets/binaries/darwin-amd64/'
+        return __dirname +  '/assets/binaries/mac-x64/'
     }
     throw 'UNKNOWN OS'
 }
