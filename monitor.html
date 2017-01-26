@@ -26,31 +26,48 @@
                     </a>
                 </div>
             </div>
-            <!-- first row: status icon -->
+            <!-- status icon and text -->
             <div class="row">
                 <div class="col-xs-12 text-xs-center">
-                    <img id="status-icon" src="assets/loading.gif">
+                    <table id="status-table">
+                        <tr>
+                            <td><img id="status-icon" src="assets/loading.gif"></td>
+                            <td>
+                                <span id="status-text">status-text</span><br>
+                                <span id="tooltip-text" class="text-muted">tooltip-text</span>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-            <!-- second row: status text -->
-            <div class="row">
-                <div class="col-xs-12 text-xs-center">
-                    <span id="status-text">status-text</span>
+
+            <!-- detailed info -->
+            <div class="row" id="infotab">
+                <hr>
+                <div class="col-xs-5 text-xs-right">
+                    <b data-l10n="ipLabel"></b><br>
+                    <b data-l10n="connModeLabel"></b><br>
+                    <b data-l10n="speedLabel"></b><br>
+                    <b data-l10n="balanceLabel"></b>
+                </div>
+                <div class="col-xs-7">
+                    <img id="exit-flag" src="assets/flags/un.svg">
+                    <span id="exit-value">...</span><br>
+                    <span id="connmode-value">...</span><br>
+                    <span id="speed-value">...</span><br>
+                    <span id="balance-value">...</span>
                 </div>
             </div>
-            <!-- third row: tooltip -->
-            <div class="row">
-                <div class="col-xs-12 text-xs-center text-muted">
-                    <span id="tooltip-text">tooltip-text</span><br>
-                </div>
-            </div>
-            <!-- fourth row: buttons -->
+
+            <!-- buttons -->
             <div class="row">
                 <div class="col-xs-12 text-xs-center">
                     <hr>
                     <button type="button" class="btn btn-primary"
-                        id="connect-btn">connect-btn</button>
+                        data-l10n="connectBtn"
+                        id="connect-btn"></button>
                     <button type="button" class="btn btn-warning"
+                        data-l10n="disconnectBtn"
                         id="disconnect-btn">disconnect-btn</button>
                 </div>
             </div>
@@ -81,48 +98,43 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="settings-title">
-                                settings-title
-                            </h4>
+                            <h4 class="modal-title" id="settings-title" data-l10n="settingsTitle"></h4>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body text-xs-center">
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox"
                                         id="chk-autoconfig-browser" value="">
-                                    <span id="lab-autoconfig-browser">lab-autoconfig-browser</span>
+                                    <span id="lab-autoconfig-browser"
+                                     data-l10n="autoconfigBrowser"></span>
                                 </label>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox"
                                         id="chk-avoid-china" value="">
-                                    <span id="lab-avoid-china">lab-avoid-china</span>
+                                    <span id="lab-avoid-china" data-l10n="avoidChina"></span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <span data-l10n="langSelect"></span>&nbsp;&nbsp;&nbsp;
+                                    <select class="custom-select" id="lang-dropdown">
+                                        <option value="en">English</option>
+                                        <option value="zht">正體中文</option>
+                                        <option value="zhs">简体中文</option>
+                                    </select>
                                 </label>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="settings-dismiss">
-                                settings-dismiss
+                            <button type="button" class="btn btn-primary" id="settings-dismiss"
+                                data-l10n="settingsDismiss">
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- bottom bar -->
-        <div id="bottom-bar">
-            <table>
-                <tr>
-                    <td><span id="balance-value">...</span>
-                        <span id="balance-label">balance-label</span></td>
-                    <td class="text-xs-right">
-                        <span id="speed-value">...</span>
-                        <img id="exit-flag" src="assets/flags/un.svg">
-                        <span id="exit-value">...</span>
-                    </td>
-                </tr>
-            </table>
         </div>
         <script>
             window.$ = window.jQuery = require('./jquery.js')
@@ -140,13 +152,14 @@
             let state = ""
             function setStatusConnecting() {
                 $("#status-text").html(l10n["statusConnecting"])
-                $("#tooltip-text").html("　")
+                $("#tooltip-text").html("")
                 // prevent the animation from resetting
                 if (state != "connecting") {
                     $("#status-icon").attr("src", "assets/loading.gif")
                 }
                 $("#connect-btn").hide()
                 $("#disconnect-btn").show()
+                $("#infotab").addClass("faded")
                 state = "connecting"
             }
             function setStatusConnected() {
@@ -157,22 +170,21 @@
                     $("#tooltip-text").html(l10n["tooltipProxy"])
                 }
                 $("#status-icon").attr("src", "assets/connected.png")
+                $("#infotab").removeClass("faded")
                 state = "connected"
             }
             function setStatusDisconnected() {
                 $("#status-text").html(l10n["statusDisconnected"])
-                $("#tooltip-text").html("　")
+                $("#tooltip-text").html("")
                 $("#status-icon").attr("src", "assets/disconnected.png")
                 $("#disconnect-btn").hide()
                 $("#connect-btn").show()
+                $("#infotab").addClass("faded")
                 state = "disconnected"
             }
             // initialize labels function
             function initLabels() {
-                $("#version-string").text("D001")
-                $("#balance-label").text(l10n["balanceLabel"])
-                $("#connect-btn").text(l10n["connectBtn"])
-                $("#disconnect-btn").text(l10n["disconnectBtn"])
+                $("#version-string").text("D002")
                 $("title").text(l10n["geph"])
                 setStatusConnecting()
             }
@@ -193,9 +205,19 @@
                         }
                         // update net info
                         $.getJSON("http://127.0.0.1:8790/netinfo", function(data) {
+                            // Exit node flag and IP
                             $("#exit-value").text(data.Exit)
                             $("#exit-flag").attr("src", "assets/flags/" +
                                 data.ExitCountry.toLowerCase() + ".svg")
+                            // Connection mode
+                            if (data.Entry != "") {
+                                $("#connmode-value").html(l10n["connModeDirect"] + " (" +
+                                    data.Entry.substring(0,6) + ")")
+                                $("#connmode-value").attr("class", "text-success")
+                            } else {
+                                $("#connmode-value").html(l10n["connModeBackup"])
+                                $("#connmode-value").attr("class", "text-danger")
+                            }
                         })
                         // update the speed
                         let newTrans = data.BytesTX + data.BytesRX
@@ -228,17 +250,13 @@
             $(document).ready(function(){
                 // settings button
                 $("#settings-btn").on('click', function() {
-                    // set labels
-                    $("#settings-title").text(l10n["settingsTitle"])
-                    $("#lab-autoconfig-browser").text(l10n["autoconfigBrowser"])
-                    $("#lab-avoid-china").text(l10n["avoidChina"])
-                    $("#settings-dismiss").text(l10n["settingsDismiss"])
                     $("#settings-modal").modal({backdrop:"static", keyboard:false})
                     // fill in the checkboxes
                     $("#chk-autoconfig-browser").prop("checked",
                         localStorage.getItem("gephpref.autoconfig-browser") == "true")
                     $("#chk-avoid-china").prop("checked",
                         localStorage.getItem("gephpref.avoid-china") == "true")
+                    $("#lang-dropdown").val(localStorage.getItem("gephpref.lang"))
                 })
 
                 // save settings
@@ -247,6 +265,10 @@
                         $("#chk-autoconfig-browser").prop("checked"))
                     localStorage.setItem("gephpref.avoid-china",
                         $("#chk-avoid-china").prop("checked"))
+                    localStorage.setItem("gephpref.lang",
+                        $("#lang-dropdown").val())
+                    // relabel everything
+                    loadLang()
                     // restart the daemon by clicking on the buttons
                     if (gephDaemon != null) {
                         $("#disconnect-btn").click()

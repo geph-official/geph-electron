@@ -4,14 +4,14 @@ function getBinaryPath() {
     const os = require('os')
     if (os.platform() == 'linux') {
         if (os.arch() == 'x64') {
-            return __dirname + '/assets/binaries/linux-amd64/'
+            return __dirname + '/assets/binaries/linux-x64/'
         } else {
-            return __dirname +  '/assets/binaries/linux-i386/'
+            return __dirname +  '/assets/binaries/linux-ia32/'
         }
     } else if (os.platform() == 'win32') {
-        return __dirname +  '/assets/binaries/windows-i386/'
+        return __dirname +  '/assets/binaries/win-ia32/'
     } else if (os.platform() == 'darwin') {
-        return __dirname +  '/assets/binaries/darwin-amd64/'
+        return __dirname +  '/assets/binaries/mac-x64/'
     }
     throw 'UNKNOWN OS'
 }
@@ -26,6 +26,7 @@ function binExt() {
 }
 
 function startDaemon() {
+    const os = require('os')
     const spawn = require('child_process').spawn
     let uname = localStorage.getItem("gephpref.uname")
     let pword = localStorage.getItem("gephpref.pword")
@@ -35,7 +36,8 @@ function startDaemon() {
     gephDaemon = spawn(getBinaryPath() + 'geph' + binExt(),
         ['client', '--geodb', __dirname + '/assets/ip-mappings.csv',
          '--uname', uname, '--pwd', pword,
-         '--whitelist', avoidChina ? "CN" : ""])
+         '--whitelist', avoidChina ? "CN" : "",
+         "--cachedir", os.tmpdir()])
     // PAC if we are setting the browser
     if (localStorage.getItem("gephpref.autoconfig-browser") == "true") {
         spawn(getBinaryPath() + 'pac' + binExt(),

@@ -1,13 +1,29 @@
 #!/bin/sh
 
-echo "Packaging for Windows..."
-electron-packager . --platform=win32 --arch=ia32 --icon=./assets/logo.ico --overwrite=true --ignore '(BUILD)|(linux|darwin)'
+VERSION="D002"
 
-echo "Packaging for macOS..."
-electron-packager . --platform=darwin --arch=x64 --icon=./assets/logo.icns --overwrite=true --ignore '(BUILD)|(linux|windows)'
+rm -rfv RELEASE/PreOutput
+mkdir -p RELEASE/Output
+mkdir -p RELEASE/PreOutput
 
-echo "Packaging for Linux i386..."
-electron-packager . --platform=linux --arch=ia32 --icon=./assets/logo.icns --overwrite=true --ignore '(BUILD)|(darwin|windows)'
+echo "Packaging for Linux 64-bit..."
+node_modules/.bin/build --linux --x64
+mv dist/*.AppImage RELEASE/Output/geph-linux64-$VERSION.AppImage
+rm -rf dist
 
-echo "Packaging for Linux amd64..."
-electron-packager . --platform=linux --arch=x64 --icon=./assets/logo.icns --overwrite=true --ignore '(BUILD)|(darwin|windows)'
+echo "Packaging for Linux 32-bit..."
+node_modules/.bin/build --linux --ia32
+mv dist/*.AppImage RELEASE/Output/geph-linux32-$VERSION.AppImage
+rm -rf dist
+
+echo "Packaging for macOS 64-bit..."
+node_modules/.bin/build --mac --x64
+mv dist/mac RELEASE/PreOutput/geph-macos-$VERSION
+rm -rf dist
+
+echo "Packaging for Windows 32-bit..."
+node_modules/.bin/build --win --ia32
+mv dist/win-ia32-unpacked RELEASE/PreOutput/geph-windows-$VERSION
+rm -rf dist
+
+echo "** NOTE: Go to a Windows box and a Mac box to finish packaging **"
