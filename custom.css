@@ -8,6 +8,11 @@ body {
     font-family: "Arial", "Helvetica", "Liberation Sans", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif !important;
 }
 
+/* Prevent using SimSun */
+:lang(zh-TW) {
+    font-family: "Arial", "Helvetica", "Liberation Sans", "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif !important;
+}
+
 .text-success {
     color: #007b43 !important;
 }

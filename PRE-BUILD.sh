@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION="D002"
+VERSION="D003"
 
 rm -rfv RELEASE/PreOutput
 mkdir -p RELEASE/Output

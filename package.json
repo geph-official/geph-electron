@@ -5,8 +5,8 @@
   "version": "0.0.2",
   "main": "main.js",
   "devDependencies": {
-    "electron": "^1.4.12",
-    "electron-builder": "^11.4.4"
+    "electron": "^1.8.4",
+    "electron-builder": "^11.7.0"
   },
   "build": {
     "appId": "io.geph.geph-electron",
@@ -33,5 +33,6 @@
       "icon": "assets/logo.ico",
       "target": "dir"
     }
-  }
+  },
+  "dependencies": {}
 }

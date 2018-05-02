@@ -15,6 +15,8 @@ let l10nEn = {
     "captchaBox": "Verification",
     "registerSubmit": "Register",
 
+    "unlimited": "Unlimited",
+
     "registerTitle": "Register new account",
     "registerSuccess": "Registration successful!\nYou may now log in with your new account.",
     "errUserExists": "User already exists. Please choose another username.",
@@ -31,7 +33,9 @@ let l10nEn = {
     "connModeLabel": "Connection",
     "connModeDirect": "Normal",
     "connModeBackup": "Backup",
-    "balanceLabel": "Balance",
+    "balanceLabel": "Remaining data",
+    "planLabel": "Plan",
+    "planFree": "Free",
     "speedLabel": "Transfer",
 
     "connectBtn": "Connect",
@@ -43,7 +47,11 @@ let l10nEn = {
     "langSelect": "Language",
     "settingsDismiss": "Save settings",
 
-    "macPacMsg": "Geph requires your password the first time it is started in order to configure your network."
+    "macPacMsg": "Geph requires your password the first time it is started in order to configure your network.",
+
+    "updateInfo": "A new version of Geph has been released! Please download it as soon as possible.",
+    "updateDownload": "Download",
+    "updateLater": "Later"
 }
 
 let l10nZht = {
@@ -78,9 +86,13 @@ let l10nZht = {
     "ipLabel": "公網IP",
     "connModeLabel": "連接模式",
     "connModeDirect": "快速",
-    "connModeBackup": "緊急",
+    "connModeBackup": "備用",
     "balanceLabel": "剩餘流量",
     "speedLabel": "當前速率",
+    "planLabel": "帳戶類型",
+    "planFree": "免費",
+
+    "unlimited": "無限",
 
     "connectBtn": "連接",
     "disconnectBtn": "斷開",
@@ -91,7 +103,11 @@ let l10nZht = {
     "langSelect": "選擇語言",
     "settingsDismiss": "保存設定",
 
-    "macPacMsg": "在第一次使用時，迷霧通需要您的密碼來更改您的網路設定。"
+    "macPacMsg": "在第一次使用時，迷霧通需要您的密碼來更改您的網路設定。",
+
+    "updateInfo": "迷霧通已經更新到新的版本，請儘快下載",
+    "updateDownload": "下載",
+    "updateLater": "以後再說"
 }
 
 let l10nZhs = {
@@ -126,9 +142,13 @@ let l10nZhs = {
     "ipLabel": "公网IP",
     "connModeLabel": "连接模式",
     "connModeDirect": "快速",
-    "connModeBackup": "紧急",
+    "connModeBackup": "备用",
     "balanceLabel": "剩余流量",
     "speedLabel": "当前速率",
+    "planLabel": "帐户类型",
+    "planFree": "免费",
+
+    "unlimited": "无限",
 
     "connectBtn": "连接",
     "disconnectBtn": "断开",
@@ -139,7 +159,11 @@ let l10nZhs = {
     "langSelect": "选择语言",
     "settingsDismiss": "保存设定",
 
-    "macPacMsg": "在第一次使用时，迷雾通需要您的密码来更改您的网络设定。"
+    "macPacMsg": "在第一次使用时，迷雾通需要您的密码来更改您的网络设定。",
+
+    "updateInfo": "迷雾通已更新到新的版本，请尽快下载",
+    "updateDownload": "下载",
+    "updateLater": "以后再说"
 }
 
 let l10n = l10nEn

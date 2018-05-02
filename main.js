@@ -18,14 +18,14 @@ function createWindow() {
 	if (os.platform() == "win32") {
 		win = new BrowserWindow({
 			width: 400,
-			height: 420,
+			height: 460,
 			resizable: false,
 			maximizable: false
 		})
 	} else {
 		win = new BrowserWindow({
 			width: 400,
-			height: 380,
+			height: 420,
 			resizable: false,
 			maximizable: false
 		})
