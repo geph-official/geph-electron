@@ -1,6 +1,6 @@
-; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
+﻿; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
-#define MyAppVersion "D003"
+#define MyAppVersion "2.0.1"
 #define MyAppPublisher "Geph team"
 #define MyAppURL "https://geph.io/"
 #define MyAppExeName "Geph.exe"
