@@ -1,7 +1,8 @@
 #!/bin/sh
 
-VERSION="DEV"
+VERSION="2.0.1"
 
+rm -rfv RELEASE/PreOutput
 mkdir -p RELEASE/Output
 mkdir -p RELEASE/PreOutput
 

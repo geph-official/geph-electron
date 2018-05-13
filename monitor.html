@@ -48,6 +48,7 @@
                     <b data-l10n="ipLabel"></b><br>
                     <b data-l10n="connModeLabel"></b><br>
                     <b data-l10n="speedLabel"></b><br>
+                    <b data-l10n="planLabel"></b><br>
                     <b data-l10n="balanceLabel"></b>
                 </div>
                 <div class="col-xs-7">
@@ -55,6 +56,7 @@
                     <span id="exit-value">...</span><br>
                     <span id="connmode-value">...</span><br>
                     <span id="speed-value">...</span><br>
+                    <span id="plan-value">...</span><br>
                     <span id="balance-value">...</span>
                 </div>
             </div>
@@ -142,6 +144,7 @@
         <script src="bootstrap/js/bootstrap.js"></script>
         <script src="l10n.js"></script>
         <script src="daemon.js"></script>
+        <script src="autoupdate.js"></script>
         <script>
             // kill the daemon when we exit
             window.onbeforeunload = function (e) {
@@ -184,7 +187,7 @@
             }
             // initialize labels function
             function initLabels() {
-                $("#version-string").text("DEV")
+                $("#version-string").text(currentVersion)
                 $("title").text(l10n["geph"])
                 setStatusConnecting()
             }
@@ -197,10 +200,24 @@
                         setStatusConnected()
                         let omc = monCount
                         monCount++
-                        // update account info every 10 seconds
+                        // update account info every 30 seconds
                         if (omc % 10 == 0) {
                             $.getJSON("http://127.0.0.1:8790/accinfo", function(data) {
-                                $("#balance-value").text((data.Balance/1000.0).toFixed(2) + " GB")
+                                // plan text
+                                if (data.PremiumInfo.Plan != "") {
+                                    let lang = localStorage.getItem("gephpref.lang")
+                                    $("#plan-value").text(data.PremiumInfo.Desc.Name[lang])
+                                } else {
+                                    $("#plan-value").text(l10n["planFree"])
+                                }
+                                // balance
+                                if (data.PremiumInfo.Unlimited) {
+                                    $("#balance-value").text(l10n["unlimited"])
+                                } else if (data.FreeBalance > 1000){
+                                    $("#balance-value").text((data.FreeBalance/1000.0).toFixed(2) + " GB")
+                                } else {
+                                    $("#balance-value").text((data.FreeBalance) + " MB")
+                                }
                             })
                         }
                         // update net info

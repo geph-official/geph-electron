@@ -1,5 +1,0 @@
-#!/bin/sh
-VERSION="D002rc1"
-tar -C ../geph-electron-darwin-x64 -cvf - geph-electron.app | pv | bzip2 -9 > ./Output/geph-macos-$VERSION.tar.bz2
-tar -C ../geph-electron-linux-x64 -cvf - '.' | pv | bzip2 -9 > ./Output/geph-linux64-$VERSION.tar.bz2
-tar -C ../geph-electron-linux-ia32 -cvf - '.' | pv | bzip2 -9 > ./Output/geph-linux32-$VERSION.tar.bz2
