@@ -34,6 +34,8 @@ let l10nEn = {
     "connModeDirect": "Normal",
     "connModeBackup": "Backup",
     "balanceLabel": "Remaining data",
+    "remtimeLabel": "Remaining time",
+    "days": "days",
     "planLabel": "Plan",
     "planFree": "Free",
     "speedLabel": "Transfer",
@@ -51,7 +53,10 @@ let l10nEn = {
 
     "updateInfo": "A new version of Geph has been released! Please download it as soon as possible.",
     "updateDownload": "Download",
-    "updateLater": "Later"
+    "updateLater": "Later",
+
+    "upgradeblurb": "Unlimited bandwidth from $3.98/month!",
+    "managesub": "Manage subscription"
 }
 
 let l10nZht = {
@@ -88,6 +93,8 @@ let l10nZht = {
     "connModeDirect": "快速",
     "connModeBackup": "備用",
     "balanceLabel": "剩餘流量",
+    "remtimeLabel": "剩餘時間",
+    "days": "天",
     "speedLabel": "當前速率",
     "planLabel": "帳戶類型",
     "planFree": "免費",
@@ -107,7 +114,10 @@ let l10nZht = {
 
     "updateInfo": "迷霧通已經更新到新的版本，請儘快下載",
     "updateDownload": "下載",
-    "updateLater": "以後再說"
+    "updateLater": "以後再說",
+
+    "upgradeblurb": "升級至無限流量，每月$3.98起",
+    "managesub": "管理帳戶"
 }
 
 let l10nZhs = {
@@ -144,6 +154,8 @@ let l10nZhs = {
     "connModeDirect": "快速",
     "connModeBackup": "备用",
     "balanceLabel": "剩余流量",
+    "remtimeLabel": "剩余时间",
+    "days": "天",
     "speedLabel": "当前速率",
     "planLabel": "帐户类型",
     "planFree": "免费",
@@ -163,7 +175,10 @@ let l10nZhs = {
 
     "updateInfo": "迷雾通已更新到新的版本，请尽快下载",
     "updateDownload": "下载",
-    "updateLater": "以后再说"
+    "updateLater": "以后再说",
+
+    "upgradeblurb": "升级至无限流量，每月$3.98起",
+    "managesub": "管理帐户"
 }
 
 let l10n = l10nEn

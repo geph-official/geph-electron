@@ -15,10 +15,13 @@
                     <img id="logo-icon" src="assets/logo-old.png">
                 </div>
                 <div class="col-xs-8 text-xs-center text-white">
-                    Version
-                    <span id="version-string">
-                        version-string
-                    </span>
+                    <form action="https://geph.io/billing/login" target="_blank" method="get">
+                        <input type="hidden" id="uname" name="uname">
+                        <input type="hidden" id="pwd" name="pwd">
+                        <input type="hidden" name="next" value="/billing/dashboard">
+                        <button type="submit" class="btn btn-primary btn-sm" data-l10n="upgradeblurb" id="upgradeblurb" style="display: none">
+                        </button>
+                    </form>
                 </div>
                 <div class="col-xs-2 text-white text-xs-right">
                     <a id="settings-btn" href="#">
@@ -47,17 +50,17 @@
                 <div class="col-xs-5 text-xs-right">
                     <b data-l10n="ipLabel"></b><br>
                     <b data-l10n="connModeLabel"></b><br>
-                    <b data-l10n="speedLabel"></b><br>
                     <b data-l10n="planLabel"></b><br>
-                    <b data-l10n="balanceLabel"></b>
+                    <b data-l10n="balanceLabel" id="balance-label"></b>
+                    <b data-l10n="remtimeLabel" id="remtime-label" style="display:none"></b>
                 </div>
                 <div class="col-xs-7">
                     <img id="exit-flag" src="assets/flags/un.svg">
                     <span id="exit-value">...</span><br>
                     <span id="connmode-value">...</span><br>
-                    <span id="speed-value">...</span><br>
                     <span id="plan-value">...</span><br>
                     <span id="balance-value">...</span>
+                    <span id="remtime-value" style="display:none">...</span>
                 </div>
             </div>
 
@@ -177,18 +180,17 @@
                 state = "connected"
             }
             function setStatusDisconnected() {
+                location.replace("login.html")
                 $("#status-text").html(l10n["statusDisconnected"])
                 $("#tooltip-text").html("")
                 $("#status-icon").attr("src", "assets/disconnected.png")
                 $("#disconnect-btn").hide()
-                $("#connect-btn").show()
                 $("#infotab").addClass("faded")
                 state = "disconnected"
             }
             // initialize labels function
             function initLabels() {
-                $("#version-string").text(currentVersion)
-                $("title").text(l10n["geph"])
+                $("title").text(l10n["geph"] + " " + currentVersion)
                 setStatusConnecting()
             }
             // one iteration of the monitoring loop
@@ -201,22 +203,42 @@
                         let omc = monCount
                         monCount++
                         // update account info every 30 seconds
-                        if (omc % 10 == 0) {
+                        if (omc % 30 == 0) {
                             $.getJSON("http://127.0.0.1:8790/accinfo", function(data) {
                                 // plan text
                                 if (data.PremiumInfo.Plan != "") {
                                     let lang = localStorage.getItem("gephpref.lang")
                                     $("#plan-value").text(data.PremiumInfo.Desc.Name[lang])
+                                    $("#upgradeblurb").text(l10n["managesub"])
+                                    $("#upgradeblurb").show()
                                 } else {
                                     $("#plan-value").text(l10n["planFree"])
+                                    $("#upgradeblurb").text(l10n["upgradeblurb"])
+                                    $("#upgradeblurb").show()
                                 }
                                 // balance
                                 if (data.PremiumInfo.Unlimited) {
-                                    $("#balance-value").text(l10n["unlimited"])
-                                } else if (data.FreeBalance > 1000){
-                                    $("#balance-value").text((data.FreeBalance/1000.0).toFixed(2) + " GB")
+                                    $("#remtime-label").show()
+                                    $("#balance-label").hide()
+                                    $("#remtime-value").show()
+                                    $("#balance-value").hide()
+                                    let daysleft = (data.PremiumInfo.ExpUnix - (new Date().getTime()/1000))/86400
+                                    if (daysleft > 10000) {
+                                        $("#remtime-value").html("Forever<br>")
+                                    } else {
+                                        $("#remtime-value").html(daysleft.toFixed(2) +
+                                         " " + l10n["days"] + "<br>")
+                                    }
                                 } else {
-                                    $("#balance-value").text((data.FreeBalance) + " MB")
+                                    if (data.FreeBalance > 1000){
+                                        $("#remtime-label").hide()
+                                        $("#balance-label").show()
+                                        $("#remtime-value").hide()
+                                        $("#balance-value").show()
+                                        $("#balance-value").html((data.FreeBalance/1000.0).toFixed(2) + " GB"  + "<br>")
+                                    } else {
+                                        $("#balance-value").html((data.FreeBalance) + " MB" + "<br>")
+                                    }
                                 }
                             })
                         }
@@ -236,12 +258,6 @@
                                 $("#connmode-value").attr("class", "text-danger")
                             }
                         })
-                        // update the speed
-                        let newTrans = data.BytesTX + data.BytesRX
-                        if (lastTrans != 0) {
-                            $("#speed-value").text(((newTrans - lastTrans)/1000.0).toFixed(1) + " KB/s")
-                        }
-                        lastTrans = newTrans
                     } else {
                         setStatusConnecting()
                     }
@@ -265,6 +281,11 @@
 
             // entry point
             $(document).ready(function(){
+                // upgrade button
+                $("#uname").val(localStorage.getItem("gephpref.uname"))
+                $("#pwd").val(localStorage.getItem("gephpref.pword"))
+
+
                 // settings button
                 $("#settings-btn").on('click', function() {
                     $("#settings-modal").modal({backdrop:"static", keyboard:false})

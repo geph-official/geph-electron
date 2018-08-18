@@ -122,6 +122,7 @@
         <script src="bootstrap/js/bootstrap.js"></script>
         <script src="l10n.js"></script>
         <script src="daemon.js"></script>
+        <script src="autoupdate.js"></script>
         <script>
             function disableButtons() {
                 $("button").attr("disabled", true)
@@ -131,7 +132,7 @@
             }
             $(document).ready(function(){
                 // initialize the labels
-                $("title").text(l10n["geph"])
+                $("title").text(l10n["geph"] + " " + currentVersion)
                 $("#uname-box").attr("placeholder", l10n["unameBox"])
                 $("#pword-box").attr("placeholder", l10n["pwordBox"])
                 $("#login-btn").text(l10n["loginBtn"])

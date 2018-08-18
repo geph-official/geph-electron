@@ -14,26 +14,31 @@ let win
 function createWindow() {
 	// Create the browser window.
 	const os = require('os')
+	const {shell} = require('electron')
 
 	if (os.platform() == "win32") {
 		win = new BrowserWindow({
 			width: 400,
-			height: 460,
+			height: 400,
 			resizable: false,
 			maximizable: false
 		})
 	} else {
 		win = new BrowserWindow({
 			width: 400,
-			height: 420,
+			height: 380,
 			resizable: false,
 			maximizable: false
 		})
 	}
+	win.webContents.on('new-window', function(event, url) {
+		event.preventDefault()
+		shell.openExternal(url)
+	})
 
 	win.setMenu(null);
 	// Prevent the UI itself from being routed through Geph
-	win.webContents.session.setProxy({proxyRules:"direct://"}, () => console.log("prox set"))
+	win.webContents.session.setProxy({proxyRules:"direct://"}, () => console.log("UI proxy unset"))
 
 	// and load the index.html of the app.
 	win.loadURL(url.format({
