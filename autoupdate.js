@@ -18,7 +18,7 @@ const {dialog} = require('electron').remote
 const {shell} = require('electron')
 
 var dialogShowed = false
-var currentVersion = "2.0.1"
+var currentVersion = "2.0.2"
 
 function checkForUpdates() {
     $.getJSON("https://raw.githubusercontent.com/rensa-labs/geph-autoupdate/master/stable.json",

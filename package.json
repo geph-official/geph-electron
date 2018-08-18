@@ -20,7 +20,9 @@
     ],
     "linux": {
       "category": "Network",
-      "target": ["AppImage"]
+      "target": [
+        "AppImage"
+      ]
     },
     "appImage": {
       "systemIntegration": "ask"

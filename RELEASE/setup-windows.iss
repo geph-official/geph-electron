@@ -1,6 +1,6 @@
 ﻿; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
-#define MyAppVersion "2.0.1"
+#define MyAppVersion "2.0.2"
 #define MyAppPublisher "Geph team"
 #define MyAppURL "https://geph.io/"
 #define MyAppExeName "Geph.exe"
@@ -20,8 +20,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{cm:MyAppName}
 DefaultGroupName={cm:MyAppName}
 OutputBaseFilename=geph-windows-{#MyAppVersion}-setup
-Compression=lzma2
-LZMANumBlockThreads=1
+Compression=zip/9
 SolidCompression=yes
 
 [Languages]

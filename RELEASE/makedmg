@@ -1,0 +1,2 @@
+#!/bin/bash
+./create-dmg --volname Geph --app-drop-link 400 0 OUTPUT.dmg ./PreOutput/geph-macos-*
