@@ -2,11 +2,11 @@
   "name": "Geph",
   "description": "Geph (迷霧通) is a modular Internet censorship circumvention system designed specifically to deal with national filtering. ",
   "author": "Geph team",
-  "version": "v2.0.1",
+  "version": "v2.1.0",
   "main": "main.js",
   "devDependencies": {
-    "electron": "^2.0.0",
-    "electron-builder": "^20.13.3"
+    "electron": "^2.0.17",
+    "electron-builder": "^20.40.2"
   },
   "build": {
     "appId": "io.geph.geph-electron",
@@ -37,5 +37,8 @@
       "target": "dir"
     }
   },
-  "dependencies": {}
+  "dependencies": {},
+  "scripts": {
+    "start": "electron ."
+  }
 }

@@ -37,8 +37,7 @@ function startDaemon() {
     gephDaemon = spawn(getBinaryPath() + 'geph' + binExt(),
         ['client', '--geodb', __dirname + '/assets/ip-mappings.csv',
          '--uname', uname, '--pwd', pword,
-         '--whitelist', avoidChina ? "CN" : "",
-         "--cachedir", os.tmpdir()])
+         '--whitelist', avoidChina ? "CN" : ""])
     // PAC if we are setting the browser
     if (localStorage.getItem("gephpref.autoconfig-browser") == "true") {
         spawn(getBinaryPath() + 'pac' + binExt(),

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION="v0.3.0"
+VERSION="v0.4.0"
 
 echo "Updating Windows binary..."
 curl https://dl.geph.io/XGO_BUILD/geph-$VERSION-windows-4.0-386.exe > ./assets/binaries/win-ia32/geph.exe
