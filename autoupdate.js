@@ -16,9 +16,10 @@ function getOsName() {
 
 const {dialog} = require('electron').remote
 const {shell} = require('electron')
+const {app} = require('electron').remote
 
 var dialogShowed = false
-var currentVersion = "2.1.0"
+var currentVersion = app.getVersion()
 
 function checkForUpdates() {
     $.getJSON("https://raw.githubusercontent.com/rensa-labs/geph-autoupdate/master/stable.json",

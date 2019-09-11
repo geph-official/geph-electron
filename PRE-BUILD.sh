@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION="2.1.0"
+VERSION=$(node -e "console.log(require('./package.json').version);")
 
 rm -rfv RELEASE/PreOutput
 mkdir -p RELEASE/Output

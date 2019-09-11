@@ -40,9 +40,15 @@ function startDaemon() {
          '--whitelist', avoidChina ? "CN" : ""])
     // PAC if we are setting the browser
     if (localStorage.getItem("gephpref.autoconfig-browser") == "true") {
-        spawn(getBinaryPath() + 'pac' + binExt(),
-            ["on", "http://127.0.0.1:8790/proxy.pac"])
-        console.log("** PAC path is " +  getBinaryPath() + "pac" + binExt(), ", trying to run **")
+        // Don't use the pac executable on Windoze!
+        if (require('os').platform() == "win32") {
+            console.log("Win32, using alternative proxy enable")
+            spawn(getBinaryPath() + 'ProxyToggle.exe', ["127.0.0.1:8780"])
+        } else {
+            spawn(getBinaryPath() + 'pac' + binExt(),
+                ["on", "http://127.0.0.1:8790/proxy.pac"])
+            console.log("** PAC path is " +  getBinaryPath() + "pac" + binExt(), ", trying to run **")
+        }
     }
     gephDaemon.stderr.on('data', (data) => console.log(`stderr: ${data}`))
 }
@@ -51,7 +57,12 @@ function stopDaemon() {
     if (gephDaemon != null) {
         const spawn = require('child_process').spawn
         gephDaemon.kill()
-        spawn(getBinaryPath() + 'pac' + binExt(), ["off"])
+        if (require('os').platform() == "win32") {
+            console.log("Win32, using alternative proxy disable")
+            spawn(getBinaryPath() + 'ProxyToggle.exe', [])
+        } else {
+            spawn(getBinaryPath() + 'pac' + binExt(), ["off"])
+        }
         gephDaemon = null
     }
 }
